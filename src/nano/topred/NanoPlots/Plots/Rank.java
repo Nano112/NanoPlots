@@ -1,4 +1,4 @@
-package nano.topred.NanoPlotPlugin.Plots;
+package nano.topred.NanoPlots.Plots;
     public enum Rank {
         BANNED,
         RANDOM,

@@ -3,10 +3,10 @@
 // (powered by Fernflower decompiler)
 //
 
-package nano.topred.NanoPlotPlugin.Plots;
+package nano.topred.NanoPlots.Plots;
 
 
-import nano.topred.NanoPlotPlugin.PlotPlayer;
+import nano.topred.NanoPlots.PlotPlayer;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import java.util.ArrayList;
@@ -35,6 +35,19 @@ public class Plots
         }
         return null; //Plot doesn't exist
 
+    }
+
+    public static boolean removePlotFromID(int id)
+    {
+        for (Plot p : plots)
+        {
+            if (p.getId() == id)
+            {
+                plots.remove(p);
+                return true;
+            }
+        }
+        return false;
     }
 
     public static int getPlotNumber()

@@ -1,4 +1,4 @@
-package nano.topred.NanoPlotPlugin;
+package nano.topred.NanoPlots;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

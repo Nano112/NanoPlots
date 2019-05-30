@@ -1,7 +1,7 @@
-package nano.topred.NanoPlotPlugin.Plots;
+package nano.topred.NanoPlots.Plots;
 
-import nano.topred.NanoPlotPlugin.PlotPlayer;
-import nano.topred.NanoPlotPlugin.PlotsData;
+import nano.topred.NanoPlots.PlotPlayer;
+import nano.topred.NanoPlots.PlotsData;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -18,6 +18,9 @@ public class PlotMembers {
         members.add(plotMember);
 
     }
+
+
+
     public Rank getRank(Player p){
        return this.members.stream().filter(o -> p.equals(o.getPlayer())).findFirst().orElse(null).getRank();
     }

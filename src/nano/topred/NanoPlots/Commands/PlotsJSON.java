@@ -1,8 +1,8 @@
-package nano.topred.NanoPlotPlugin.Commands;
+package nano.topred.NanoPlots.Commands;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import nano.topred.NanoPlotPlugin.Plots.Plots;
+import nano.topred.NanoPlots.Plots.Plots;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

@@ -1,9 +1,9 @@
-package nano.topred.NanoPlotPlugin.Plots;
+package nano.topred.NanoPlots.Plots;
 
-import javafx.geometry.Pos;
-import nano.topred.NanoPlotPlugin.PlotPlayer;
-import nano.topred.NanoPlotPlugin.PlotsData;
-import nano.topred.NanoPlotPlugin.Position;
+
+import nano.topred.NanoPlots.PlotPlayer;
+import nano.topred.NanoPlots.PlotsData;
+import nano.topred.NanoPlots.Position;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.List;
 
 
 @SuppressWarnings("ALL")
@@ -134,6 +135,19 @@ public class Plot
             return true;
         }
         return false;
+    }
+
+    public List<Player> getOwners()
+    {
+        List<Player> owners = new ArrayList<>();
+        for (PlotMember m:this.plotMembers.members)
+        {
+            if(m.getRank().equals(Rank.OWNER))
+            {
+                owners.add(m.getPlayer().getPlayer());
+            }
+        }
+        return owners;
     }
 
     public int getId()

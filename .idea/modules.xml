@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/NanoPlotPlugin.iml" filepath="$PROJECT_DIR$/NanoPlotPlugin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/NanoPlots.iml" filepath="$PROJECT_DIR$/NanoPlots.iml" />
     </modules>
   </component>
 </project>

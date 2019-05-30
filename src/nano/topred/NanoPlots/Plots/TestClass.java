@@ -1,7 +1,6 @@
-package nano.topred.NanoPlotPlugin.Plots;
+package nano.topred.NanoPlots.Plots;
 
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
 
 public class TestClass
 {

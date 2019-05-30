@@ -1,6 +1,6 @@
-package nano.topred.NanoPlotPlugin;
+package nano.topred.NanoPlots;
 
-import nano.topred.NanoPlotPlugin.Plots.Plots;
+import nano.topred.NanoPlots.Plots.Plots;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;

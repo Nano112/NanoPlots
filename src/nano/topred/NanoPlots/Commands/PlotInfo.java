@@ -1,7 +1,7 @@
-package nano.topred.NanoPlotPlugin.Commands;
+package nano.topred.NanoPlots.Commands;
 
-import nano.topred.NanoPlotPlugin.Plots.Plot;
-import nano.topred.NanoPlotPlugin.Plots.Plots;
+import nano.topred.NanoPlots.Plots.Plot;
+import nano.topred.NanoPlots.Plots.Plots;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

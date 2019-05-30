@@ -1,6 +1,6 @@
-package nano.topred.NanoPlotPlugin.Plots;
+package nano.topred.NanoPlots.Plots;
 
-import nano.topred.NanoPlotPlugin.PlotPlayer;
+import nano.topred.NanoPlots.PlotPlayer;
 
 import java.sql.Timestamp;
 

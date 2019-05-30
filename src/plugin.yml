@@ -1,7 +1,7 @@
-name: NanoPlotPlugin
+name: NanoPlots
 version: 0.0
 author: Nano_
-main: nano.topred.NanoPlotPlugin.Main
+main: nano.topred.NanoPlots.Main
 website: topred.fr
 commands:
   test:

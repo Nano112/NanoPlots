@@ -1,11 +1,11 @@
-package nano.topred.NanoPlotPlugin;
+package nano.topred.NanoPlots;
 
-import nano.topred.NanoPlotPlugin.Commands.*;
-import nano.topred.NanoPlotPlugin.Commands.PlotAdd.PlotAddOwner;
-import nano.topred.NanoPlotPlugin.Commands.PlotAdd.PlotAddPlayer;
-import nano.topred.NanoPlotPlugin.Commands.PlotAdd.PlotAddTrusted;
-import nano.topred.NanoPlotPlugin.PlayerEvent.BlockPlace;
-import nano.topred.NanoPlotPlugin.PlayerEvent.PlayerInteract;
+import nano.topred.NanoPlots.Commands.*;
+import nano.topred.NanoPlots.Commands.PlotAdd.PlotAddOwner;
+import nano.topred.NanoPlots.Commands.PlotAdd.PlotAddPlayer;
+import nano.topred.NanoPlots.Commands.PlotAdd.PlotAddTrusted;
+import nano.topred.NanoPlots.PlayerEvent.BlockPlace;
+import nano.topred.NanoPlots.PlayerEvent.PlayerInteract;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -48,6 +48,7 @@ public class Main extends JavaPlugin
         this.getCommand("plotAddTrusted").setExecutor(new PlotAddTrusted());
         this.getCommand("plotAddOwner").setExecutor(new PlotAddOwner());
         this.getCommand("plotHome").setExecutor(new PlotHome());
+        this.getCommand("plotDelete").setExecutor(new PlotDelete());
         this.getCommand("json").setExecutor(new PlotsJSON());
     }
 

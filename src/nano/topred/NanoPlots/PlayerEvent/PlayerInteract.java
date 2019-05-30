@@ -1,8 +1,8 @@
-package nano.topred.NanoPlotPlugin.PlayerEvent;
+package nano.topred.NanoPlots.PlayerEvent;
 
-import nano.topred.NanoPlotPlugin.Plots.Plot;
-import nano.topred.NanoPlotPlugin.Plots.Plots;
-import nano.topred.NanoPlotPlugin.PlotsData;
+import nano.topred.NanoPlots.Plots.Plot;
+import nano.topred.NanoPlots.Plots.Plots;
+import nano.topred.NanoPlots.PlotsData;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
