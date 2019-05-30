@@ -1,0 +1,33 @@
+name: NanoPlotPlugin
+version: 0.0
+author: Nano_
+main: nano.topred.NanoPlotPlugin.Main
+website: topred.fr
+commands:
+  test:
+    description: Une commande pour test
+    usage: /test
+  plotClaim:
+    description: Une commande qui permet de prendre un plot
+    usage: /plotclaim
+  plotList:
+    description: Une commande qui list les plots
+    usage: /plotlist
+  plotInfo:
+    description: Une command qui donne les infos sur le plot sur lequelle vous vous trouvez
+    usage: /plotinfo
+  plotAddPlayer:
+    description: Une commande qui permet d'ajouter un membre au plot
+    usage: /plotAddPlayer [Player]
+  plotAddtrusted:
+      description: Une commande qui permet d'ajouter un membre de confiance au plot
+      usage: /plotAddtrusted [Player]
+  plotAddOwner:
+      description: Une commande qui permet d'ajouter un proprietaire au plot
+      usage: /plotAddOwner [Player]
+  plotHome:
+    description: Vous teleport a un plot
+    usage: /plotHome [number]
+  json:
+    description: prints plot in json format
+    usage: /json
