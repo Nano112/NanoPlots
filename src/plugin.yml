@@ -1,5 +1,6 @@
 name: NanoPlots
 version: 0.0
+api-version: 1.14
 author: Nano_
 main: nano.topred.NanoPlots.Main
 website: topred.fr
@@ -10,6 +11,9 @@ commands:
   plotClaim:
     description: Une commande qui permet de prendre un plot
     usage: /plotclaim
+  plotClaimCustom:
+    description: Une commande qui permet de prendre un plot custom
+    usage: /plotclaimcustom
   plotList:
     description: Une commande qui list les plots
     usage: /plotlist
@@ -28,6 +32,9 @@ commands:
   plotHome:
     description: Vous teleport a un plot
     usage: /plotHome [number]
+  plotDelete:
+    description: Suprime le plot sur lequel vous vous trouvez
+    usage: /plotDelete
   json:
     description: prints plot in json format
     usage: /json

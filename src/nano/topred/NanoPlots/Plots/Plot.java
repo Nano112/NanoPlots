@@ -25,39 +25,103 @@ public class Plot
 
     private Timestamp creationTime;
 
-    private int width;//longeur du plot en X
-
-    private int height;//longueur du plot en Z
-
-    private Position corner;
+    private List<SubPlot> subPlots;
 
     private PlotMembers plotMembers;
 
+    private Position position;
 
-    public Plot(PlotPlayer o, int ID, Location l, int w, int h)
+    private Position minPosition;
+
+    private Position maxPosition;
+
+    private int minY;
+    private int maxY;
+
+    public Plot(PlotPlayer o, int ID, List<SubPlot> subPlots, int minY, int maxY)
     {
-        creator = o;
-        id = ID;
-        PlotMember pm = new PlotMember(o, Rank.OWNER);
-        plotMembers = new PlotMembers(pm);
-        corner = new Position(l); //Coin Nord West donc plus petit X et plus petit Z
-        width = w;
-        height = h;
-        creationTime = new Timestamp(System.currentTimeMillis());
+        this.minY = minY;
+        this.maxY = maxY;
+        this.creator = o;
+        this.id = ID;
+        this.plotMembers = new PlotMembers(new PlotMember(o, Rank.OWNER));
+        this.subPlots = subPlots;
+        this.creationTime = new Timestamp(System.currentTimeMillis());
+        this.position = getMeanPosition();
+        this.minPosition = getMinPosition();
+        this.maxPosition = getMaxPosition();
         createWalls();
     }
 
-    public Plot(Player o, int ID, Location l, int w, int h)
+
+    public Position getMeanPosition()
     {
-        creator = PlotsData.getPlotPlayer(o);
-        id = ID;
-        PlotMember pm = new PlotMember(PlotsData.getPlotPlayer(o), Rank.OWNER);
-        plotMembers = new PlotMembers(pm);
-        corner = new Position(l); //Coin Nord West donc plus petit X et plus petit Z
-        width = w;
-        height = h;
-        creationTime = new Timestamp(System.currentTimeMillis());
-        createWalls();
+        double X = 0;
+        double Y = 0;
+        double Z = 0;
+        int count = 0;
+        Position p = null;
+        for(SubPlot sp: this.subPlots)
+        {
+            count++;
+            p = sp.getCorner();
+            X += p.getX();
+            Y += p.getY();
+            Z += p.getZ();
+        }
+        return new Position(X/count,Y/count,Z/count,p.getWorld());
+    }
+
+    public Position getMaxPosition()
+    {
+        Position maxPos = this.subPlots.get(0).getMaxPosition();
+        double maxX = maxPos.getX();
+        double maxY= maxPos.getY();
+        double maxZ = maxPos.getZ();
+        for(int i=1; i<this.subPlots.size(); ++i)
+        {
+
+            maxPos = this.subPlots.get(i).getMaxPosition();
+            if(maxX<maxPos.getX())
+            {
+                maxX = maxPos.getX();
+            }
+            if(maxY<maxPos.getY())
+            {
+                maxY = maxPos.getY();
+            }
+            if(maxZ<maxPos.getZ())
+            {
+                maxZ = maxPos.getZ();
+            }
+        }
+        return new Position(maxX,maxY,maxZ,maxPos.getWorld());
+    }
+
+    public Position getMinPosition()
+    {
+        Position minPos = this.subPlots.get(0).getMinPosition();
+        double minX = minPos.getX();
+        double minY= minPos.getY();
+        double minZ = minPos.getZ();
+        for(int i=1; i<this.subPlots.size(); ++i)
+        {
+
+            minPos = this.subPlots.get(i).getMinPosition();
+            if(minX<minPos.getX())
+            {
+                minX = minPos.getX();
+            }
+            if(minY<minPos.getY())
+            {
+                minY = minPos.getY();
+            }
+            if(minZ < minPos.getZ())
+            {
+                minZ = minPos.getZ();
+            }
+        }
+        return new Position(minX,minY,minZ,minPos.getWorld());
     }
 
     public void printPlayers(CommandSender s)
@@ -75,19 +139,19 @@ public class Plot
         sender.sendMessage("ID: "+ this.getId());
         sender.sendMessage("Owner: " + this.creator.getPlayer().getDisplayName().toString());
         sender.sendMessage("Creation Time: " + this.creationTime.toString());
-        sender.sendMessage("Position: World:" + this.corner.getWorld().getName() + "  X: " + this.corner.getX() + "  Y: " + this.corner.getY() + "  Z: " + this.corner.getZ());
+        sender.sendMessage("Mean Position: World:" + this.position.getWorld().getName() + "  X: " + this.position.getX() + "  Y: " + this.position.getY() + "  Z: " + this.position.getZ());
         sender.sendMessage("Players: ");
         this.printPlayers(sender);
     }
 
     public void createWalls()
     {
-        for (int x = (int)corner.getX(); x < corner.getX() + width; ++x)
+        for (int x = (int)minPosition.getX(); x < maxPosition.getX(); ++x)
         {
-            for (int z = (int)corner.getZ(); z < corner.getZ() + height; ++z)
+            for (int z = (int)minPosition.getZ(); z < maxPosition.getZ(); ++z)
             {
 
-                Location l = new Location(corner.getWorld(), x, corner.getY(), z);
+                Location l = new Location(position.getWorld(), x, position.getY(), z);
                 World world = l.getWorld();
                 world.getHighestBlockAt(x, z);
                 creator.getPlayer().sendBlockChange(l, Material.DIAMOND_BLOCK, (byte) 0);
@@ -95,16 +159,18 @@ public class Plot
         }
     }
 
+    public boolean isInPlot(Position p)
+    {
+        if(p.getY()>=this.minY && p.getY()<=this.maxY)
+            for(SubPlot sp: subPlots)
+                if(sp.isInSubPlot(p))
+                    return true;
+        return false;
+    }
+
     public boolean isInPlot(Location l)
     {
-        if (l.getX() >= corner.getX() && l.getX() < corner.getX() + width)
-        {
-            if (l.getZ() >= corner.getZ() && l.getZ() < corner.getZ() + height)
-            {
-                return true;
-            }
-        }
-        return false;
+        return isInPlot(new Position(l));
     }
 
     public boolean canBuild(Plot plot, PlotPlayer p)
@@ -180,34 +246,14 @@ public class Plot
         this.creationTime = creationTime;
     }
 
-    public int getWidth()
+    public Position getPosition()
     {
-        return width;
+        return position;
     }
 
-    public void setWidth(int width)
+    public void setPosition(Position corner)
     {
-        this.width = width;
-    }
-
-    public int getHeight()
-    {
-        return height;
-    }
-
-    public void setHeight(int height)
-    {
-        this.height = height;
-    }
-
-    public Position getCorner()
-    {
-        return corner;
-    }
-
-    public void setCorner(Position corner)
-    {
-        this.corner = corner;
+        this.position = corner;
     }
 
     public PlotMembers getPlotMembers()

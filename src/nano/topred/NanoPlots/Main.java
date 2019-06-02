@@ -13,7 +13,6 @@ public class Main extends JavaPlugin
 {
 
     private static PlotsData plotsData;
-
     @Override
 
     public void onEnable()
@@ -42,6 +41,7 @@ public class Main extends JavaPlugin
     {
         this.getCommand("test").setExecutor(new TestCommand());
         this.getCommand("plotClaim").setExecutor(new PlotClaim());
+        this.getCommand("plotClaimCustom").setExecutor(new PlotClaimCustom());
         this.getCommand("plotList").setExecutor(new PlotList());
         this.getCommand("plotInfo").setExecutor(new PlotInfo());
         this.getCommand("plotAddPlayer").setExecutor(new PlotAddPlayer());
@@ -58,6 +58,7 @@ public class Main extends JavaPlugin
 
         pm.registerEvents(new BlockPlace(), this);
         pm.registerEvents(new PlayerInteract(), this);
+        pm.registerEvents(new PlotClaimCustom(),this);
 
     }
 

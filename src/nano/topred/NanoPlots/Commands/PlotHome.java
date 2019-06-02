@@ -39,7 +39,7 @@ public class PlotHome implements CommandExecutor
         }
 
         Plot plot = Plots.getPlotFromID(plotPlayerPlots.get(plotNumber));
-        player.teleport(plot.getCorner().getLocation());
+        player.teleport(plot.getPosition().getLocation());
         player.sendMessage("You have been teleported");
         return true;
     }

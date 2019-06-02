@@ -9,11 +9,12 @@ package nano.topred.NanoPlots.Plots;
                     @Override
                     public Rank next() {
                         return this; // see below for options for this line
-                    };
+                    }
+
                     @Override
                     public Rank previous() {
                         return this; // see below for options for this line
-                    };
+                    }
                 };
         public Rank next() {
             // No bounds checking required here, because the last instance overrides

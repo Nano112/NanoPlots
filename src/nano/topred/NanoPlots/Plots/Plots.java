@@ -50,10 +50,20 @@ public class Plots
         return false;
     }
 
-    public static int getPlotNumber()
+    public static int incrPlotNumber()
     {
 
         return plotsCreated++;
+    }
+
+    public static int decrPlotNumber()
+    {
+        return plotsCreated--;
+    }
+
+    public static void add(Plot plot)
+    {
+        plots.add(plot);
     }
 
     public static boolean isInPlots(Location l)

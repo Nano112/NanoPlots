@@ -31,24 +31,13 @@ public class PlotMembers {
 
     public boolean isRank(Player p, Rank r){
         Rank playerRank = getRank(p);
-        if (playerRank.equals(r)){
-            return true;
-        }
-        return false;
+        return playerRank.equals(r);
     }
     public boolean containsPlayer(PlotPlayer p) {
-        if (this.members.indexOf(this.members.stream().filter(o -> p.equals(o.getPlayer())).findFirst().orElse(null))==-1)
-        {
-            return false;
-        }
-        return true ;
+        return this.members.indexOf(this.members.stream().filter(o -> p.equals(o.getPlayer())).findFirst().orElse(null)) != -1;
     }
     public boolean containsPlayer(Player p) {
-        if (this.members.indexOf(this.members.stream().filter(o -> PlotsData.getPlotPlayer(p).equals(o.getPlayer().getPlayer())).findFirst().orElse(null))==-1)
-        {
-            return false;
-        }
-        return true ;
+        return this.members.indexOf(this.members.stream().filter(o -> PlotsData.getPlotPlayer(p).equals(o.getPlayer().getPlayer())).findFirst().orElse(null)) != -1;
     }
 
 

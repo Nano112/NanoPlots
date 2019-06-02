@@ -9,11 +9,14 @@ import java.util.UUID;
 public class PlotPlayer {
     private ArrayList<Integer> plotIDs;
     private UUID playerUUID;
+    private double credit;
 
     public PlotPlayer(Player p){
-        playerUUID = p.getUniqueId();
-        plotIDs=new ArrayList<>();
+        this.playerUUID = p.getUniqueId();
+        this.plotIDs = new ArrayList<>();
+        this.credit =  100;
     }
+
     public Player getPlayer(){
        return Bukkit.getPlayer(playerUUID);
     }
@@ -33,5 +36,13 @@ public class PlotPlayer {
     public UUID getPlayerUUID()
     {
         return playerUUID;
+    }
+
+    public double getCredit() {
+        return credit;
+    }
+
+    public void setCredit(double credit) {
+        this.credit = credit;
     }
 }
