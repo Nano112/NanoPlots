@@ -1,12 +1,9 @@
 package nano.topred.NanoPlots.Commands;
 
-import nano.topred.NanoPlots.Plots.CustomPlot;
+import nano.topred.NanoPlots.MyMath.Geometry.G2D.Point2D;
+import nano.topred.NanoPlots.MyMath.Geometry.G2D.Polygon2D;
+import nano.topred.NanoPlots.Plots.PlotGeometry;
 import nano.topred.NanoPlots.Position;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -19,12 +16,11 @@ import org.bukkit.event.player.PlayerToggleSneakEvent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class PlotClaimCustom implements CommandExecutor, Listener {
 
 
-    private static HashMap<Player, CustomPlot> customPlots = new HashMap<>();
+    private static HashMap<Player, PlotGeometry> customPlots = new HashMap<>();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
@@ -34,6 +30,7 @@ public class PlotClaimCustom implements CommandExecutor, Listener {
             sender.sendMessage("You must be a player");
             return false;
         }
+        Player player = (Player)sender;
         if (args.length==0)
         {
             sender.sendMessage("You must use arguments");
@@ -43,7 +40,11 @@ public class PlotClaimCustom implements CommandExecutor, Listener {
         if(args[0].equals("add"))
         {
             sender.sendMessage("Started creation");
-            customPlots.put((Player) sender,new CustomPlot());
+            customPlots.put((Player) sender,new PlotGeometry(
+                    new Polygon2D(new ArrayList<Point2D>()),
+                    player.getLocation().getY()-2,
+                    player.getLocation().getY(),
+                    player.getWorld().getUID()));
 
         }
         if(args[0].equals("stop"))
@@ -67,10 +68,9 @@ public class PlotClaimCustom implements CommandExecutor, Listener {
             if(customPlots.containsKey(player))
             {
                 customPlots.get(player).unShowBorder(player);
-                CustomPlot cp = customPlots.get(player) ;
-                cp.addPosition(new Position(player.getLocation().add(0,-1,0)));
+                PlotGeometry cp = customPlots.get(player) ;
+                cp.addControlePoint(new Position(player.getLocation()));
                 customPlots.put(player,cp);
-
                 customPlots.get(player).showBorder(player);
                 customPlots.get(player).showControlePoints(player);
             }

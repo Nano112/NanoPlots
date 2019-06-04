@@ -25,7 +25,7 @@ public class Plot
 
     private Timestamp creationTime;
 
-    private List<SubPlot> subPlots;
+    private PlotGeometry plotGeometry;
 
     private PlotMembers plotMembers;
 
@@ -38,91 +38,18 @@ public class Plot
     private int minY;
     private int maxY;
 
-    public Plot(PlotPlayer o, int ID, List<SubPlot> subPlots, int minY, int maxY)
+    public Plot(PlotPlayer o, int ID, PlotGeometry plotGeometry, int minY, int maxY)
     {
         this.minY = minY;
         this.maxY = maxY;
         this.creator = o;
         this.id = ID;
         this.plotMembers = new PlotMembers(new PlotMember(o, Rank.OWNER));
-        this.subPlots = subPlots;
+        this.plotGeometry = plotGeometry;
         this.creationTime = new Timestamp(System.currentTimeMillis());
-        this.position = getMeanPosition();
-        this.minPosition = getMinPosition();
-        this.maxPosition = getMaxPosition();
         createWalls();
     }
 
-
-    public Position getMeanPosition()
-    {
-        double X = 0;
-        double Y = 0;
-        double Z = 0;
-        int count = 0;
-        Position p = null;
-        for(SubPlot sp: this.subPlots)
-        {
-            count++;
-            p = sp.getCorner();
-            X += p.getX();
-            Y += p.getY();
-            Z += p.getZ();
-        }
-        return new Position(X/count,Y/count,Z/count,p.getWorld());
-    }
-
-    public Position getMaxPosition()
-    {
-        Position maxPos = this.subPlots.get(0).getMaxPosition();
-        double maxX = maxPos.getX();
-        double maxY= maxPos.getY();
-        double maxZ = maxPos.getZ();
-        for(int i=1; i<this.subPlots.size(); ++i)
-        {
-
-            maxPos = this.subPlots.get(i).getMaxPosition();
-            if(maxX<maxPos.getX())
-            {
-                maxX = maxPos.getX();
-            }
-            if(maxY<maxPos.getY())
-            {
-                maxY = maxPos.getY();
-            }
-            if(maxZ<maxPos.getZ())
-            {
-                maxZ = maxPos.getZ();
-            }
-        }
-        return new Position(maxX,maxY,maxZ,maxPos.getWorld());
-    }
-
-    public Position getMinPosition()
-    {
-        Position minPos = this.subPlots.get(0).getMinPosition();
-        double minX = minPos.getX();
-        double minY= minPos.getY();
-        double minZ = minPos.getZ();
-        for(int i=1; i<this.subPlots.size(); ++i)
-        {
-
-            minPos = this.subPlots.get(i).getMinPosition();
-            if(minX<minPos.getX())
-            {
-                minX = minPos.getX();
-            }
-            if(minY<minPos.getY())
-            {
-                minY = minPos.getY();
-            }
-            if(minZ < minPos.getZ())
-            {
-                minZ = minPos.getZ();
-            }
-        }
-        return new Position(minX,minY,minZ,minPos.getWorld());
-    }
 
     public void printPlayers(CommandSender s)
     {
@@ -161,11 +88,7 @@ public class Plot
 
     public boolean isInPlot(Position p)
     {
-        if(p.getY()>=this.minY && p.getY()<=this.maxY)
-            for(SubPlot sp: subPlots)
-                if(sp.isInSubPlot(p))
-                    return true;
-        return false;
+        return this.plotGeometry.isInside(p);
     }
 
     public boolean isInPlot(Location l)

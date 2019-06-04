@@ -1,5 +1,6 @@
 package nano.topred.NanoPlots.Plots;
 
+import nano.topred.NanoPlots.MyMath.Geometry.G3D.Point3D;
 import nano.topred.NanoPlots.Position;
 import org.bukkit.Location;
 
@@ -29,14 +30,14 @@ public class SubPlot {
     {
         double Xmax = this.corner.getX()+width;
         double Zmax = this.corner.getZ()+height;
-        return new Position(Xmax, this.corner.getY(), Zmax, this.corner.getWorld());
+        return new Position(new Point3D(Xmax, this.corner.getY(), Zmax), this.corner.getWorld());
     }
 
     public Position getMinPosition()
     {
         double Xmin = this.corner.getX();
         double Zmin = this.corner.getZ();
-        return new Position(Xmin, this.corner.getY(), Zmin, this.corner.getWorld());
+        return new Position(new Point3D(Xmin, this.corner.getY(), Zmin), this.corner.getWorld());
     }
 
     public boolean isInSubPlot(Position p)

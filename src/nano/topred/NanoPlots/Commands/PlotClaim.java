@@ -35,16 +35,13 @@ public class PlotClaim implements CommandExecutor
             {
                 int id = Plots.incrPlotNumber();
                 plotPlayer.getPlotIDs().add(id);
-                List<SubPlot> subPlots = new ArrayList<>();
-                subPlots.add(new SubPlot(10,10,plotPlayer.getPlayer().getLocation()));
-                Plot plot = new Plot(plotPlayer,id, subPlots,0,256);
-                Plots.add(plot);
-                return true;
+                //TODO
             } else
             {
                 plotPlayer.getPlayer().sendMessage("You are in a plot, you must claim oustide of a plot");
                 return false;
             }
         }
+        return true;
     }
 }
