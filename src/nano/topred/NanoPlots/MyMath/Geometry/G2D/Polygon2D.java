@@ -56,10 +56,10 @@ public class Polygon2D {
         recalc();
         return true;
     }
+
     public boolean isInside(Point2D p)
     {
         Segment2D intersectSegment = new Segment2D(p,new Point2D(Double.MAX_VALUE, Double.MAX_VALUE));
-
         if(this.boundingBox != null && this.boundingBox.isInside(p))
         {
             int count = 0;
@@ -141,11 +141,40 @@ public class Polygon2D {
                 new Point2D(extremePositions.get(2),extremePositions.get(1)));
     }
 
+    public ArrayList<Position> boundingBoxToPositions(double y, UUID worldId)
+    {
+        ArrayList<Position> positions ;
+        if(this.boundingBox != null)
+            positions = this.boundingBox.toPositions(y, worldId);
+        else
+            positions = new ArrayList<>();
+        return positions;
+    }
+
+    public ArrayList<Position> surfaceToPositions(double y, UUID worldId)
+    {
+        ArrayList<Position> positions = new ArrayList<>();
+        if (this.boundingBox == null)
+        {
+            return positions;
+        }
+        System.out.println("MinX " + this.boundingBox.getMinX()+"   MaxX "+this.boundingBox.getMaxX());
+        System.out.println("MinY " + this.boundingBox.getMinY()+"   MaxY "+this.boundingBox.getMaxY());
+        for (double X = this.boundingBox.getMinX(); X <= this.boundingBox.getMaxX(); ++X) {
+            for (double Y = this.boundingBox.getMinY(); Y <= this.boundingBox.getMaxY(); ++Y) {
+                Point2D p = new Point2D(X, Y);
+                if (isInside(p))
+                    positions.add(p.toWorldPosition(y, worldId));
+            }
+        }
+        return positions;
+    }
+
     public ArrayList<Position> edgesToWorldPositions(double y, UUID worldId)
     {
         ArrayList<Position> positions = new ArrayList<>();
         for (Segment2D s: this.edges)
-            positions.addAll(s.toWorldPositions(y,worldId));
+            positions.addAll(s.toPositions(y,worldId));
         return positions;
     }
 

@@ -51,17 +51,46 @@ public class PlotGeometry
         Position.positionsToBlocks(positions,player, Material.ORANGE_WOOL.createBlockData());
     }
 
+    public void unShowBorder(Player player)
+    {
+        ArrayList<Position> positions = this.plotShape.edgesToWorldPositions(this.yMean, this.worldId);
+        Position.updatePositionBlocks(positions,player);
+    }
+
+    public void showBoundingBox(Player player) {
+        if (this.plotShape.getBoundingBox() != null) {
+            ArrayList<Position> positions = this.plotShape.boundingBoxToPositions(this.yMean, this.worldId);
+            Position.positionsToBlocks(positions, player, Material.GREEN_WOOL.createBlockData());
+        }
+    }
+
+    public void unShowBoundingBox(Player player)
+    {
+        if(this.plotShape.getBoundingBox() != null)
+        {
+            ArrayList<Position> positions = this.plotShape.boundingBoxToPositions(this.yMean, this.worldId);
+            Position.updatePositionBlocks(positions,player);
+        }
+    }
+
+    public void showSurface(Player player)
+    {
+        ArrayList<Position> positions = this.plotShape.surfaceToPositions(this.yMean, this.worldId);
+        Position.positionsToBlocks(positions,player,Material.BLUE_WOOL.createBlockData());
+    }
+
+    public void unShowSurface(Player player)
+    {
+        Position.updatePositionBlocks(this.plotShape.surfaceToPositions(this.yMean, this.worldId),player);
+    }
+
     public void showControlePoints(Player player)
     {
         ArrayList<Position> positions = this.plotShape.verticesToWorldPositions(this.yMean, this.worldId);
         Position.positionsToBlocks(positions,player,Material.BLACK_WOOL.createBlockData());
     }
 
-    public void unShowBorder(Player player)
-    {
-        ArrayList<Position> positions = this.plotShape.edgesToWorldPositions(this.yMean, this.worldId);
-        Position.updatePositionBlocks(positions,player);
-    }
+
 
     public void recalc()
     {

@@ -1,5 +1,10 @@
 package nano.topred.NanoPlots.MyMath.Geometry.G2D;
 
+import nano.topred.NanoPlots.Position;
+
+import java.util.ArrayList;
+import java.util.UUID;
+
 public class Rectangle2D {
     //c0----c1
     //--------
@@ -10,6 +15,10 @@ public class Rectangle2D {
     private Point2D corner1;
     private Point2D corner2;
     private Point2D corner3;
+    private Segment2D edge0;
+    private Segment2D edge1;
+    private Segment2D edge2;
+    private Segment2D edge3;
     private Point2D center;
     private double minX;
     private double maxX;
@@ -26,15 +35,8 @@ public class Rectangle2D {
         this.corner1 = p1;
         this.corner2 = p2;
         this.corner3 = p3;
-        this.width = this.corner1.getX() - this.corner0.getX();
-        this.height = this.corner3.getY() - this.corner0.getY();
-        this.center = Point2D.midPoint(this.corner0, this.corner2);
-        this.surface = this.height * this.width;
-        this.perimetre = this.height * 2 + this.width * 2;
-        this.minX = this.corner0.getX();
-        this.minY = this.corner0.getY();
-        this.maxX = this.corner2.getX();
-        this.maxY = this.corner2.getY();
+
+        recalc();
     }
 
     public Rectangle2D(Point2D p, double width, double height)
@@ -45,6 +47,11 @@ public class Rectangle2D {
         this.corner1 = new Point2D(p.getX() + width,p.getY());
         this.corner2 = new Point2D(p.getX() + width,p.getY() + height);
         this.corner3 = new Point2D(p.getX(),p.getY() + height);
+        recalc();
+    }
+
+    public void recalc()
+    {
         this.center = Point2D.midPoint(this.corner0, this.corner2);
         this.surface = this.height * this.width;
         this.perimetre = this.height * 2 + this.width * 2;
@@ -52,7 +59,12 @@ public class Rectangle2D {
         this.minY = this.corner0.getY();
         this.maxX = this.corner2.getX();
         this.maxY = this.corner2.getY();
+        this.width = this.corner1.getX() - this.corner0.getX();
+        this.height = this.corner3.getY() - this.corner0.getY();
+        calcEdges();
     }
+
+
 
     public boolean isInside(Point2D p)
     {
@@ -63,12 +75,34 @@ public class Rectangle2D {
         return false;
     }
 
+    public void calcEdges() {
+        this.edge0 = new Segment2D(this.corner0,this.corner1);
+        this.edge1 = new Segment2D(this.corner1,this.corner2);
+        this.edge2 = new Segment2D(this.corner2,this.corner3);
+        this.edge3 = new Segment2D(this.corner3,this.corner0);
+    }
+
+    public ArrayList<Position> toPositions(double y, UUID worldId)
+    {
+
+        ArrayList<Position> positions = new ArrayList<>();
+        if(edge0== null)
+            return positions;
+        positions.addAll(this.edge0.toPositions(y,worldId));
+        positions.addAll(this.edge1.toPositions(y,worldId));
+        positions.addAll(this.edge2.toPositions(y,worldId));
+        positions.addAll(this.edge3.toPositions(y,worldId));
+        return positions;
+    }
+
+
     public Point2D getCorner0() {
         return corner0;
     }
 
     public void setCorner0(Point2D corner0) {
         this.corner0 = corner0;
+        recalc();
     }
 
     public Point2D getCorner1() {
@@ -77,6 +111,7 @@ public class Rectangle2D {
 
     public void setCorner1(Point2D corner1) {
         this.corner1 = corner1;
+        recalc();
     }
 
     public Point2D getCorner2() {
@@ -85,6 +120,7 @@ public class Rectangle2D {
 
     public void setCorner2(Point2D corner2) {
         this.corner2 = corner2;
+        recalc();
     }
 
     public Point2D getCorner3() {
@@ -93,6 +129,7 @@ public class Rectangle2D {
 
     public void setCorner3(Point2D corner3) {
         this.corner3 = corner3;
+        recalc();
     }
 
     public double getWidth() {
@@ -101,6 +138,7 @@ public class Rectangle2D {
 
     public void setWidth(double width) {
         this.width = width;
+        recalc();
     }
 
     public double getHeight() {
@@ -109,61 +147,54 @@ public class Rectangle2D {
 
     public void setHeight(double height) {
         this.height = height;
+        recalc();
     }
 
     public Point2D getCenter() {
         return center;
     }
 
-    public void setCenter(Point2D center) {
-        this.center = center;
-    }
 
     public double getSurface() {
         return surface;
     }
 
-    public void setSurface(double surface) {
-        this.surface = surface;
-    }
 
     public double getPerimetre() {
         return perimetre;
-    }
-
-    public void setPerimetre(double perimetre) {
-        this.perimetre = perimetre;
     }
 
     public double getMinX() {
         return minX;
     }
 
-    public void setMinX(double minX) {
-        this.minX = minX;
-    }
-
     public double getMaxX() {
         return maxX;
-    }
-
-    public void setMaxX(double maxX) {
-        this.maxX = maxX;
     }
 
     public double getMinY() {
         return minY;
     }
 
-    public void setMinY(double minY) {
-        this.minY = minY;
-    }
-
     public double getMaxY() {
         return maxY;
     }
 
-    public void setMaxY(double maxY) {
-        this.maxY = maxY;
+    public Segment2D getEdge0() {
+        return edge0;
     }
+
+    public Segment2D getEdge1() {
+        return edge1;
+    }
+
+    public Segment2D getEdge2() {
+        return edge2;
+    }
+
+    public Segment2D getEdge3() {
+        return edge3;
+    }
+
+
 }

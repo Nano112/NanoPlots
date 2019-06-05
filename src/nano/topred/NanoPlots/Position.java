@@ -13,8 +13,8 @@ import java.util.UUID;
 
 public class Position
 {
-    Point3D pos;
-    UUID world;
+    private Point3D pos;
+    private UUID world;
 
     public Position(Location l){
         pos = new Point3D(l.getX(),l.getY(),l.getZ());

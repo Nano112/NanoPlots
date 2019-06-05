@@ -29,6 +29,57 @@ public class Point2D {
         return new Position(new Point3D(this.getX(),y,this.getY()),worldId);
     }
 
+    public static ArrayList<Point2D> bresenham(Point2D pos0, Point2D pos1)
+    {
+
+        int x1 = (int)Math.floor(pos0.getX());
+        int x2 = (int)Math.floor(pos1.getX());
+        int y1 = (int)Math.floor(pos0.getY());
+        int y2 = (int)Math.floor(pos1.getY());
+        ArrayList<Point2D> edge = new ArrayList<>();
+        int d = 0;
+
+        int dx = Math.abs(x2 - x1);
+        int dy = Math.abs(y2 - y1);
+
+        int dx2 = 2 * dx; // slope scaling factors to
+        int dy2 = 2 * dy; // avoid floating point
+
+        int ix = x1 < x2 ? 1 : -1; // increment direction
+        int iy = y1 < y2 ? 1 : -1;
+
+        int x = x1;
+        int y = y1;
+
+        if (dx >= dy) {
+            while (true) {
+                edge.add(new Point2D(x,y));
+                if (x == x2)
+                    break;
+                x += ix;
+                d += dy2;
+                if (d > dx) {
+                    y += iy;
+                    d -= dx2;
+                }
+            }
+        } else {
+            while (true) {
+                edge.add(new Point2D(x,y));
+                if (y == y2)
+                    break;
+                y += iy;
+                d += dx2;
+                if (d > dy) {
+                    x += ix;
+                    d -= dy2;
+                }
+            }
+        }
+        return edge;
+    }
+
+
     public double getY() {
         return y;
     }

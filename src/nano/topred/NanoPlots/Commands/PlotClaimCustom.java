@@ -51,6 +51,8 @@ public class PlotClaimCustom implements CommandExecutor, Listener {
         {
             sender.sendMessage("End of creation");
             customPlots.get(sender).unShowBorder((Player)sender);
+            customPlots.get(sender).unShowBoundingBox((Player)sender);
+            customPlots.get(sender).unShowSurface((Player)sender);
             customPlots.remove(sender);
 
 
@@ -67,12 +69,17 @@ public class PlotClaimCustom implements CommandExecutor, Listener {
         {
             if(customPlots.containsKey(player))
             {
+                customPlots.get(player).unShowSurface(player);
                 customPlots.get(player).unShowBorder(player);
+                customPlots.get(player).unShowBoundingBox(player);
                 PlotGeometry cp = customPlots.get(player) ;
                 cp.addControlePoint(new Position(player.getLocation()));
                 customPlots.put(player,cp);
+                customPlots.get(player).showSurface(player);
+                customPlots.get(player).showBoundingBox(player);
                 customPlots.get(player).showBorder(player);
                 customPlots.get(player).showControlePoints(player);
+
             }
         }
     }
