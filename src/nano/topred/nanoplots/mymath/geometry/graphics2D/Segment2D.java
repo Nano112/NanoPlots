@@ -6,6 +6,8 @@ import nano.topred.nanoplots.Position;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import static nano.topred.nanoplots.mymath.geometry.graphics2D.Point2D.determinant;
+
 public class Segment2D {
     private Point2D p1;
     private Point2D p2;
@@ -49,6 +51,7 @@ public class Segment2D {
         return Y - this.slope*X;
     }
 
+    /*
     public static int orientation(Point2D p, Point2D q, Point2D r) {
         double val = (q.getY() - p.getY()) * (r.getX() - q.getX())
                 - (q.getX() - p.getX()) * (r.getY() - q.getY());
@@ -96,8 +99,91 @@ public class Segment2D {
         return false; // Doesn't fall in any of the above cases
 
     }
+    */
 
 
+
+
+
+
+    /*
+    public static int orientation(Point2D p, Point2D q, Point2D r) {
+        double val = (q.getY() - p.getY()) * (r.getX() - q.getX())
+                - (q.getX() - p.getX()) * (r.getY() - q.getY());
+
+        if (val == 0.0)
+            return 0; // colinear
+        return (val > 0) ? 1 : 2; // clock or counterclock wise
+    }
+
+    public static boolean intersect(Segment2D s1, Segment2D s2) {
+        Point2D p1 = s1.getP1();
+        Point2D q1 = s2.getP1();
+        Point2D p2 = s1.getP2();
+        Point2D q2 = s2.getP2();
+
+
+
+        int o1 = orientation(p1, q1, p2);
+        int o2 = orientation(p1, q1, q2);
+        int o3 = orientation(p2, q2, p1);
+        int o4 = orientation(p2, q2, q1);
+
+        if (o1 != o2 && o3 != o4)
+            return true;
+
+        return false;
+    }
+    */
+
+
+    public static boolean doBoundingBoxesIntersect(Segment2D a, Segment2D b) {
+        Rectangle2D ra = new Rectangle2D(a);
+        Rectangle2D rb = new Rectangle2D(b);
+        return rb.isInside(ra);
+    }
+
+    public static final double EPSILON = 0.000001;
+
+    public static boolean isPointOnLine(Segment2D a, Point2D b) {
+        // Move the image, so that a.first is on (0|0)
+        Segment2D aTmp = new Segment2D(new Point2D(0, 0), new Point2D(
+                a.p2.getX() - a.p1.getX(), a.p2.getY() - a.p1.getY()));
+        Point2D bTmp = new Point2D(b.getX() - a.p1.getX(), b.getY() - a.p1.getY());
+        double r = determinant(aTmp.p2, bTmp);
+        return Math.abs(r) < EPSILON;
+    }
+
+    public static boolean isPointRightOfLine(Segment2D a, Point2D b) {
+        // Move the image, so that a.first is on (0|0)
+        Segment2D aTmp = new Segment2D(new Point2D(0, 0), new Point2D(
+                a.p2.getX() - a.p1.getX(), a.p2.getY() - a.p1.getY()));
+        Point2D bTmp = new Point2D(b.getX() - a.p1.getX(), b.getY() - a.p1.getY());
+        return determinant(aTmp.p2, bTmp) < 0;
+    }
+
+
+
+
+    public static boolean lineSegmentTouchesOrCrossesLine(Segment2D a,
+                                                   Segment2D b) {
+        return isPointOnLine(a, b.p1)
+                || isPointOnLine(a, b.p2)
+                || (isPointRightOfLine(a, b.p1) ^
+                isPointRightOfLine(a, b.p2));
+    }
+
+    public static boolean intersect(Segment2D a, Segment2D b) {
+        return doBoundingBoxesIntersect(a, b)
+                && lineSegmentTouchesOrCrossesLine(a, b)
+                && lineSegmentTouchesOrCrossesLine(b, a);
+    }
+
+
+    public static Segment2D switcharoo(Segment2D a)
+    {
+        return new Segment2D(a.p2, a.p1);
+    }
 
     public String toString()
     {

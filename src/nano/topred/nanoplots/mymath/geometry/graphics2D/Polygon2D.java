@@ -2,6 +2,7 @@ package nano.topred.nanoplots.mymath.geometry.graphics2D;
 
 import nano.topred.nanoplots.Position;
 
+import javax.swing.text.Segment;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -58,25 +59,15 @@ public class Polygon2D {
 
     public boolean isInside(Point2D p)
     {
-        //TODO
-        //DOESN'T WORK !!!!
-        Segment2D intersectSegment = new Segment2D(p,new Point2D(this.boundingBox.getMaxX()+1, this.boundingBox.getMaxY()+1));
-        Segment2D intersectSegment2 = new Segment2D(p,new Point2D(this.boundingBox.getMaxX()+1, this.boundingBox.getMinY()-1));
-        if(this.boundingBox != null && this.boundingBox.isInside(p))
-        {
-            //System.out.println("Inside bounding box");
-            int count = 0;
+        Segment2D intersectSegment = new Segment2D(p,new Point2D(this.boundingBox.getMaxX()+2, this.boundingBox.getMaxY()+2));
+        if(this.boundingBox != null && this.boundingBox.isInside(p)) {
+            boolean count = false;
             for (Segment2D s: this.edges) {
-                if (Segment2D.intersect(s, intersectSegment)||Segment2D.intersect(s, intersectSegment2)) {
-                    count++;
-                    //System.out.println("INTERSECT!!!!!!!!!!!");
+                if (Segment2D.intersect(s, intersectSegment) ) {
+                    count = !count;
                 }
-                System.out.println(count);
             }
-            //System.out.println("Its all folks");
-            if (count % 2 == 1) {
-                return true;
-            }
+            return count;
         }
         return false;
     }
@@ -167,11 +158,9 @@ public class Polygon2D {
         {
             return positions;
         }
-        System.out.println(" minX"+this.boundingBox.getMinX()+" maxX"+this.boundingBox.getMaxX());
         Point2D p ;
         for (double X = this.boundingBox.getMinX(); X <= this.boundingBox.getMaxX(); ++X) {
             for (double Y = this.boundingBox.getMinY(); Y <= this.boundingBox.getMaxY(); ++Y) {
-                System.out.println(" " +X +" "+Y);
                 p = new Point2D(X, Y);
                 if (this.isInside(p)) {
                     positions.add(p.toWorldPosition(y, worldId));

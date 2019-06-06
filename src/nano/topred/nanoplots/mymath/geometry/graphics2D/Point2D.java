@@ -78,6 +78,10 @@ public class Point2D {
         return edge;
     }
 
+    public static double determinant(Point2D a, Point2D b)
+    {
+        return a.getX()*b.getY()  - b.getX()*a.getY();
+    }
 
     public String toString()
     {

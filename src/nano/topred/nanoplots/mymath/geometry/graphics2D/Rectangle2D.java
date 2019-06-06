@@ -50,6 +50,18 @@ public class Rectangle2D {
         recalc();
     }
 
+    public Rectangle2D(Segment2D s)
+    {
+
+        this.corner0 = new Point2D(Math.min(s.getP1().getX(), s.getP2().getX()),Math.min(s.getP1().getY(), s.getP2().getY()));
+        this.width = Math.abs(s.getP1().getX()-s.getP2().getX());
+        this.height = Math.abs(s.getP1().getY()-s.getP2().getY());
+        this.corner1 = new Point2D(this.corner0.getX() + width, this.corner0.getY());
+        this.corner2 = new Point2D(this.corner0.getX() + width,this.corner0.getY() + height);
+        this.corner3 = new Point2D(this.corner0.getX(),this.corner0.getY() + height);
+        recalc();
+    }
+
     public void recalc()
     {
         calcEdges();
@@ -64,7 +76,13 @@ public class Rectangle2D {
         this.height = this.corner3.getY() - this.corner0.getY();
     }
 
-
+    public boolean isInside(Rectangle2D r)
+    {
+        return r.getCorner0().getX() <= this.corner2.getX() &&
+                r.getCorner2().getX() >= this.corner0.getX() &&
+                r.getCorner0().getY() <= this.corner2.getY() &&
+                r.getCorner2().getY() >= this.corner0.getY();
+    }
 
     public boolean isInside(Point2D p)
     {
