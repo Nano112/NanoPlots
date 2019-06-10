@@ -1,9 +1,10 @@
 package nano.topred.nanoplots.plots;
 
 
-import nano.topred.nanoplots.PlotPlayer;
 import nano.topred.nanoplots.PlotsData;
-import nano.topred.nanoplots.Position;
+import nano.topred.nanoplots.logging.PlotModificationLog;
+import nano.topred.nanoplots.mymath.Position;
+import nano.topred.nanoplots.mymath.geometry.geometry2D.Point2D;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -19,11 +20,9 @@ import java.util.List;
 public class Plot
 {
     //testK
-    private int id;
+    private long id;
 
-    private PlotPlayer creator;
-
-    private Timestamp creationTime;
+    private PlotModificationLog log;
 
     private PlotGeometry plotGeometry;
 
@@ -31,59 +30,48 @@ public class Plot
 
     private Position position;
 
-    private Position minPosition;
-
-    private Position maxPosition;
-
-    private int minY;
-    private int maxY;
-
-    public Plot(PlotPlayer o, int ID, PlotGeometry plotGeometry, int minY, int maxY)
+    public Plot(Player p, PlotGeometry plotGeometry)
     {
-        this.minY = minY;
-        this.maxY = maxY;
-        this.creator = o;
-        this.id = ID;
-        this.plotMembers = new PlotMembers(new PlotMember(o, Rank.OWNER));
+        PlotPlayer plotPlayer = PlotsData.getPlotPlayer(p);
+        this.id = Plots.getNextPlotId();
+        this.plotMembers = new PlotMembers(new PlotMember(plotPlayer, Rank.OWNER));
         this.plotGeometry = plotGeometry;
-        this.creationTime = new Timestamp(System.currentTimeMillis());
-        createWalls();
+        this.plotGeometry.reCalcMeanPosition();
+        this.position = this.plotGeometry.getMeanPosition();
+        this.log = new PlotModificationLog(plotPlayer);
+        plotPlayer.getPlotIDs().add(id);
+        showPlot();
+
+
     }
 
-
-    public void printPlayers(CommandSender s)
-    {
-        for (PlotMember member : plotMembers.members)
-        {
-            s.sendMessage("     " + member.getRank() + ": " + member.getPlayer().getPlayer().getDisplayName());
-        }
-
-    }
 
     public void plotPrintInfo(CommandSender sender)
     {
         sender.sendMessage("----------------------------");
         sender.sendMessage("ID: "+ this.getId());
-        sender.sendMessage("Owner: " + this.creator.getPlayer().getDisplayName().toString());
-        sender.sendMessage("Creation Time: " + this.creationTime.toString());
+        sender.sendMessage("Creation Time: " + this.log.getCreation().getTime());
         sender.sendMessage("Mean Position: World:" + this.position.getWorld().getName() + "  X: " + this.position.getX() + "  Y: " + this.position.getY() + "  Z: " + this.position.getZ());
-        sender.sendMessage("Players: ");
-        this.printPlayers(sender);
+        sender.sendMessage("Owners: " + this.plotMembers.getOwnersAsString());
+        sender.sendMessage("Trusted: " + this.plotMembers.getTrustedAsString());
+        sender.sendMessage("Players: " + this.plotMembers.getPlayersAsString());
     }
 
-    public void createWalls()
+    public void showPlot()
     {
-        for (int x = (int)minPosition.getX(); x < maxPosition.getX(); ++x)
+        ArrayList<Point2D> points = this.plotGeometry.getSurface();
+        World w = this.position.getWorld();
+        Position pos;
+        for(Point2D p: points)
         {
-            for (int z = (int)minPosition.getZ(); z < maxPosition.getZ(); ++z)
-            {
-
-                Location l = new Location(position.getWorld(), x, position.getY(), z);
-                World world = l.getWorld();
-                world.getHighestBlockAt(x, z);
-                creator.getPlayer().sendBlockChange(l, Material.DIAMOND_BLOCK, (byte) 0);
-            }
+            pos = Point2D.toPosition(p,this.plotGeometry.getYMean()/*w.getHighestBlockYAt((int)Math.floor(p.getX()),(int)Math.floor(p.getY()))*/,w.getUID());
+            pos.getLocation().getBlock().setBlockData(Material.ORANGE_WOOL.createBlockData());
         }
+    }
+
+    public void createWalls(Player player)
+    {
+        this.plotGeometry.showSurface(player);
     }
 
     public boolean isInPlot(Position p)
@@ -139,7 +127,7 @@ public class Plot
         return owners;
     }
 
-    public int getId()
+    public long getId()
     {
         return id;
     }
@@ -149,25 +137,12 @@ public class Plot
         this.id = id;
     }
 
-    public PlotPlayer getCreator()
-    {
-        return creator;
-    }
-
-    public void setCreator(PlotPlayer creator)
-    {
-        this.creator = creator;
-    }
 
     public Timestamp getCreationTime()
     {
-        return creationTime;
+        return this.log.getCreation().getTime();
     }
 
-    public void setCreationTime(Timestamp creationTime)
-    {
-        this.creationTime = creationTime;
-    }
 
     public Position getPosition()
     {

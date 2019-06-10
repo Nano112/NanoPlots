@@ -1,6 +1,5 @@
 package nano.topred.nanoplots.plots;
 
-import nano.topred.nanoplots.PlotPlayer;
 import nano.topred.nanoplots.PlotsData;
 import org.bukkit.entity.Player;
 
@@ -16,10 +15,70 @@ public class PlotMembers {
         creator = plotMember;
         members = new ArrayList<>();
         members.add(plotMember);
-
     }
 
 
+    public String getOwnersAsString()
+    {
+        return plotMembersToString(getOwners());
+    }
+
+    public String getPlayersAsString()
+    {
+        return plotMembersToString(getPlayers());
+    }
+
+    public String getTrustedAsString()
+    {
+        return plotMembersToString(getTrusted());
+    }
+
+    public ArrayList<PlotMember> getOwners()
+    {
+        ArrayList<PlotMember> owners = new ArrayList<>();
+        for(PlotMember pm: this.members)
+        {
+            if(pm.getRank()==Rank.OWNER)
+            {
+                owners.add(pm);
+            }
+        }
+        return owners;
+    }
+
+    public ArrayList<PlotMember> getPlayers()
+    {
+        ArrayList<PlotMember> members = new ArrayList<>();
+        for(PlotMember pm: this.members)
+        {
+            if(pm.getRank()==Rank.PLAYER)
+            {
+                members.add(pm);
+            }
+        }
+        return members;
+    }
+
+    public ArrayList<PlotMember> getTrusted()
+    {
+        ArrayList<PlotMember> members = new ArrayList<>();
+        for(PlotMember pm: this.members)
+        {
+            if(pm.getRank()==Rank.TRUSTED)
+            {
+                members.add(pm);
+            }
+        }
+        return members;
+    }
+
+    public String plotMembersToString(ArrayList<PlotMember> plotMembers)
+    {
+        String s = "";
+        for (PlotMember pm: plotMembers)
+            s += ", " + pm.getPlayer().getPlayer().getDisplayName();
+        return s;
+    }
 
     public Rank getRank(Player p){
        return this.members.stream().filter(o -> p.equals(o.getPlayer())).findFirst().orElse(null).getRank();

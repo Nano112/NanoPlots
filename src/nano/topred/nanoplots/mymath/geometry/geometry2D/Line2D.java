@@ -1,4 +1,4 @@
-package nano.topred.nanoplots.mymath.geometry.graphics2D;
+package nano.topred.nanoplots.mymath.geometry.geometry2D;
 
 public class Line2D {
     private double slope;

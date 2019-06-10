@@ -1,4 +1,4 @@
-package nano.topred.nanoplots.mymath.geometry.graphics3D;
+package nano.topred.nanoplots.mymath.geometry.geometry3D;
 
 import java.util.ArrayList;
 
@@ -93,8 +93,7 @@ public class Point3D
 
     public String toString()
     {
-        String string = ("X: " + this.x) + ("Y: " + this.y) + ("Z: " + this.z);
-        return string;
+        return ("X: " + this.x) + ("Y: " + this.y) + ("Z: " + this.z);
     }
 
     public double getX() {

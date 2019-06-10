@@ -6,7 +6,6 @@
 package nano.topred.nanoplots.plots;
 
 
-import nano.topred.nanoplots.PlotPlayer;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import java.util.ArrayList;
@@ -15,16 +14,18 @@ import java.util.Iterator;
 public class Plots
 {
     private static ArrayList<Plot> plots;
+    private static long curentMaxId;
     private static int plotsCreated;
 
     public Plots(ArrayList<Plot> p)
     {
         plots = p;
         plotsCreated = 0;
+        curentMaxId = 0;
     }
 
 
-    public static Plot getPlotFromID(int id)
+    public static Plot getPlotFromID(long id)
     {
         for (Plot p : plots)
         {
@@ -37,7 +38,7 @@ public class Plots
 
     }
 
-    public static boolean removePlotFromID(int id)
+    public static boolean removePlotFromID(long id)
     {
         for (Plot p : plots)
         {
@@ -50,13 +51,13 @@ public class Plots
         return false;
     }
 
-    public static int incrPlotNumber()
+    public static long getNextPlotId()
     {
 
-        return plotsCreated++;
+        return curentMaxId++;
     }
 
-    public static int decrPlotNumber()
+    public static int getPreviousPlotId()
     {
         return plotsCreated--;
     }
@@ -66,6 +67,7 @@ public class Plots
         plots.add(plot);
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public static boolean isInPlots(Location l)
     {
         for (Plot p : plots)

@@ -1,7 +1,7 @@
 package nano.topred.nanoplots.plots;
-import nano.topred.nanoplots.mymath.geometry.graphics2D.Point2D;
-import nano.topred.nanoplots.mymath.geometry.graphics2D.Polygon2D;
-import nano.topred.nanoplots.Position;
+import nano.topred.nanoplots.mymath.geometry.geometry2D.Point2D;
+import nano.topred.nanoplots.mymath.geometry.geometry2D.Polygon2D;
+import nano.topred.nanoplots.mymath.Position;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -14,23 +14,33 @@ import static nano.topred.nanoplots.mymath.Mean.mean;
 public class PlotGeometry
 {
     private Polygon2D plotShape;
+
     private Position meanPosition;
+
+    private ArrayList<Point2D> surface;
+
     private double yMin;
+
     private double yMax;
+
     private double yMean;
+
     private UUID worldId;
 
     public PlotGeometry(Polygon2D shape, double yMin, double yMax, UUID worldId)
     {
         this.plotShape = shape;
+        this.surface = this.plotShape.getSurfacePoints();
+        this.surface.addAll(this.plotShape.edgesToPoint2D());
         this.yMin = yMin;
         this.yMax = yMax;
         this.worldId = worldId;
-        recalc();
+        reCalcMeanPosition();
     }
 
     public void addControlePoint(Position p)
     {
+        this.yMean = mean(yMin,yMax);
         this.plotShape.addVertex(new Point2D(p.getX(),p.getZ()));
     }
 
@@ -91,7 +101,7 @@ public class PlotGeometry
 
 
 
-    public void recalc()
+    public void reCalcMeanPosition()
     {
         this.yMean = mean(yMin,yMax);
         if (this.plotShape.getBoundingBox()!=null)
@@ -101,17 +111,17 @@ public class PlotGeometry
     }
 
     public Polygon2D getPlotShape() {
-        return plotShape;
+        return this.plotShape;
     }
 
     public void setPlotShape(Polygon2D plotShape) {
 
         this.plotShape = plotShape;
-        recalc();
+        reCalcMeanPosition();
     }
 
     public Position getMeanPosition() {
-        return meanPosition;
+        return this.meanPosition;
     }
 
 
@@ -121,7 +131,7 @@ public class PlotGeometry
 
     public void setYMin(double yMin) {
         this.yMin = yMin;
-        recalc();
+        reCalcMeanPosition();
     }
 
     public double getYMax() {
@@ -131,12 +141,16 @@ public class PlotGeometry
     public void setYMax(double yMax) {
 
         this.yMax = yMax;
-        recalc();
+        reCalcMeanPosition();
     }
 
     public double getYMean() {
         return yMean;
     }
 
+    public ArrayList<Point2D> getSurface()
+    {
+        return this.surface;
+    }
 
 }

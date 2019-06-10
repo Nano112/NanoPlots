@@ -32,7 +32,7 @@ public class PlotAddPlayer implements CommandExecutor {
             return true;
         }
 
-        if ( ! plot.getCreator().getPlayer().equals(player)){
+        if ( ! plot.getPlotMembers().isRank(player,Rank.OWNER)){
             sender.sendMessage("You must be the owner");
             return true;
         }

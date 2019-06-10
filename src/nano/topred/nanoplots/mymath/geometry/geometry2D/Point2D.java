@@ -1,7 +1,7 @@
-package nano.topred.nanoplots.mymath.geometry.graphics2D;
+package nano.topred.nanoplots.mymath.geometry.geometry2D;
 
-import nano.topred.nanoplots.mymath.geometry.graphics3D.Point3D;
-import nano.topred.nanoplots.Position;
+import nano.topred.nanoplots.mymath.geometry.geometry3D.Point3D;
+import nano.topred.nanoplots.mymath.Position;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -23,6 +23,11 @@ public class Point2D {
         return new Point2D(mean(a.getX(),b.getX()),mean(a.getY(),b.getY()));
     }
 
+    public static Position toPosition(Point2D p,double y, UUID worldId)
+    {
+        return new Position(new Point3D(p.getX(),y,p.getY()),worldId);
+    }
+
     public Position toWorldPosition(double y, UUID worldId)
     {
         return new Position(new Point3D(this.getX(),y,this.getY()),worldId);
@@ -30,26 +35,20 @@ public class Point2D {
 
     public static ArrayList<Point2D> bresenham(Point2D pos0, Point2D pos1)
     {
-
         int x1 = (int)Math.floor(pos0.getX());
         int x2 = (int)Math.floor(pos1.getX());
         int y1 = (int)Math.floor(pos0.getY());
         int y2 = (int)Math.floor(pos1.getY());
         ArrayList<Point2D> edge = new ArrayList<>();
         int d = 0;
-
         int dx = Math.abs(x2 - x1);
         int dy = Math.abs(y2 - y1);
-
-        int dx2 = 2 * dx; // slope scaling factors to
-        int dy2 = 2 * dy; // avoid floating point
-
-        int ix = x1 < x2 ? 1 : -1; // increment direction
+        int dx2 = 2 * dx;
+        int dy2 = 2 * dy;
+        int ix = x1 < x2 ? 1 : -1;
         int iy = y1 < y2 ? 1 : -1;
-
         int x = x1;
         int y = y1;
-
         if (dx >= dy) {
             while (true) {
                 edge.add(new Point2D(x,y));

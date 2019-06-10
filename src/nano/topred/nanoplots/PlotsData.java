@@ -1,5 +1,6 @@
 package nano.topred.nanoplots;
 
+import nano.topred.nanoplots.plots.PlotPlayer;
 import nano.topred.nanoplots.plots.Plots;
 import org.bukkit.entity.Player;
 

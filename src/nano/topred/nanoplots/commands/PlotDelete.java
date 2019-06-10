@@ -31,7 +31,6 @@ public class PlotDelete implements CommandExecutor {
           if(plot.getOwners().contains(player))
           {
               Plots.removePlotFromID(plot.getId());
-              Plots.decrPlotNumber();
               sender.sendMessage("Plot, id:"+ plot.getId() +" was deleted");
               return true;
           }

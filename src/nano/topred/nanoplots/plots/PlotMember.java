@@ -1,7 +1,5 @@
 package nano.topred.nanoplots.plots;
 
-import nano.topred.nanoplots.PlotPlayer;
-
 import java.sql.Timestamp;
 
 @SuppressWarnings("ALL")

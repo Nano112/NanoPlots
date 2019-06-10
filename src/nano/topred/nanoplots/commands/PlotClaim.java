@@ -6,7 +6,7 @@
 package nano.topred.nanoplots.commands;
 
 
-import nano.topred.nanoplots.PlotPlayer;
+import nano.topred.nanoplots.plots.PlotPlayer;
 import nano.topred.nanoplots.plots.Plots;
 import nano.topred.nanoplots.PlotsData;
 import org.bukkit.command.Command;
@@ -28,7 +28,7 @@ public class PlotClaim implements CommandExecutor
             PlotPlayer plotPlayer = PlotsData.getPlotPlayer(player);
             if (!Plots.isInPlots(plotPlayer.getPlayer().getLocation()) && !Plots.isInPlots(plotPlayer.getPlayer().getLocation().add(10.0D, 0.0D, 10.0D)))
             {
-                int id = Plots.incrPlotNumber();
+                long id = Plots.getNextPlotId();
                 plotPlayer.getPlotIDs().add(id);
                 //TODO
             } else

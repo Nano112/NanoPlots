@@ -1,4 +1,4 @@
-package nano.topred.nanoplots;
+package nano.topred.nanoplots.plots;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 public class PlotPlayer {
-    private ArrayList<Integer> plotIDs;
+    private ArrayList<Long> plotIDs;
     private UUID playerUUID;
     private double credit;
 
@@ -20,11 +20,11 @@ public class PlotPlayer {
     public Player getPlayer(){
        return Bukkit.getPlayer(playerUUID);
     }
-    public void setPlotIDs(ArrayList<Integer> plotIDs) {
+    public void setPlotIDs(ArrayList<Long> plotIDs) {
         this.plotIDs = plotIDs;
     }
 
-    public ArrayList<Integer> getPlotIDs() {
+    public ArrayList<Long> getPlotIDs() {
         return plotIDs;
     }
 

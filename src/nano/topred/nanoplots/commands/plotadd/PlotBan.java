@@ -2,6 +2,7 @@ package nano.topred.nanoplots.commands.plotadd;
 
 import nano.topred.nanoplots.plots.Plot;
 import nano.topred.nanoplots.plots.Plots;
+import nano.topred.nanoplots.plots.Rank;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -26,7 +27,7 @@ public class PlotBan implements CommandExecutor {
             return false;
         }
 
-        if ( ! plot.getCreator().equals(player)){
+        if ( ! plot.getPlotMembers().isRank(player, Rank.OWNER)){
             sender.sendMessage("You must be the owner");
             return false;
         }

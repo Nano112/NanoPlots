@@ -32,7 +32,7 @@ public class PlotAddTrusted implements CommandExecutor {
             return true;
         }
 
-        if ( ! plot.getCreator().equals(player)){
+        if ( ! plot.getPlotMembers().isRank(player, Rank.OWNER)){
             sender.sendMessage("You must be the owner");
             return true;
         }

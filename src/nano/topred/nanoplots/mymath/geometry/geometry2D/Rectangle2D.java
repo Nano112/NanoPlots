@@ -1,6 +1,6 @@
-package nano.topred.nanoplots.mymath.geometry.graphics2D;
+package nano.topred.nanoplots.mymath.geometry.geometry2D;
 
-import nano.topred.nanoplots.Position;
+import nano.topred.nanoplots.mymath.Position;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -90,10 +90,8 @@ public class Rectangle2D {
         double x = p.getX();
         double y = p.getY();
         //System.out.println("X "+x+"  Y "+y+"  minX"+this.minX+"  maxX"+this.maxX+"  minY"+this.minY+"  maxY"+this.maxY);
-        if(x >= this.minX && x <= this.maxX && y >= this.minY && y <= this.maxY)
-            return true;
+        return x >= this.minX && x <= this.maxX && y >= this.minY && y <= this.maxY;
 
-        return false;
     }
 
     public void calcEdges() {

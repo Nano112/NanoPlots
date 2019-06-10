@@ -1,14 +1,14 @@
-package nano.topred.nanoplots.mymath.geometry.graphics2D;
+package nano.topred.nanoplots.mymath.geometry.geometry2D;
 
-import nano.topred.nanoplots.Position;
+import nano.topred.nanoplots.mymath.Position;
 
-import javax.swing.text.Segment;
 import java.util.ArrayList;
 import java.util.UUID;
 
 public class Polygon2D {
 
     private ArrayList<Point2D> vertices;
+
     private int numberOfVertices;
     private ArrayList<Segment2D> edges;
     private Rectangle2D boundingBox;
@@ -60,10 +60,11 @@ public class Polygon2D {
     public boolean isInside(Point2D p)
     {
         Segment2D intersectSegment = new Segment2D(p,new Point2D(this.boundingBox.getMaxX()+2, this.boundingBox.getMaxY()+2));
+        Segment2D intersectSegment2 = new Segment2D(p,new Point2D(this.boundingBox.getMinX()-2, this.boundingBox.getMaxY()+2));
         if(this.boundingBox != null && this.boundingBox.isInside(p)) {
             boolean count = false;
             for (Segment2D s: this.edges) {
-                if (Segment2D.intersect(s, intersectSegment) ) {
+                if (Segment2D.intersect(s, intersectSegment) /*|| Segment2D.intersect(s, intersectSegment2)*/ ) {
                     count = !count;
                 }
             }
@@ -151,16 +152,39 @@ public class Polygon2D {
         return positions;
     }
 
+    public ArrayList<Point2D> getSurfacePoints()
+    {
+        final double step = 0.5;
+        ArrayList<Point2D> positions = new ArrayList<>();
+        if (this.boundingBox == null)
+        {
+            return positions;
+        }
+        Point2D p ;
+        for (double X = this.boundingBox.getMinX(); X <= this.boundingBox.getMaxX(); X+=step) {
+            for (double Y = this.boundingBox.getMinY(); Y <= this.boundingBox.getMaxY(); Y+=step) {
+                p = new Point2D(X, Y);
+                if (this.isInside(p)) {
+                    positions.add(p);
+                }
+            }
+        }
+        return positions;
+    }
+
+
+
     public ArrayList<Position> surfaceToPositions(double y, UUID worldId)
     {
+        final double step = 0.5;
         ArrayList<Position> positions = new ArrayList<>();
         if (this.boundingBox == null)
         {
             return positions;
         }
         Point2D p ;
-        for (double X = this.boundingBox.getMinX(); X <= this.boundingBox.getMaxX(); ++X) {
-            for (double Y = this.boundingBox.getMinY(); Y <= this.boundingBox.getMaxY(); ++Y) {
+        for (double X = this.boundingBox.getMinX(); X <= this.boundingBox.getMaxX(); X+=step) {
+            for (double Y = this.boundingBox.getMinY(); Y <= this.boundingBox.getMaxY(); Y+=step) {
                 p = new Point2D(X, Y);
                 if (this.isInside(p)) {
                     positions.add(p.toWorldPosition(y, worldId));
@@ -175,6 +199,14 @@ public class Polygon2D {
         ArrayList<Position> positions = new ArrayList<>();
         for (Segment2D s: this.edges)
             positions.addAll(s.toPositions(y,worldId));
+        return positions;
+    }
+
+    public ArrayList<Point2D> edgesToPoint2D()
+    {
+        ArrayList<Point2D> positions = new ArrayList<>();
+        for (Segment2D s: this.edges)
+            positions.addAll(s.getPoints());
         return positions;
     }
 

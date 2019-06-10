@@ -1,12 +1,12 @@
-package nano.topred.nanoplots.mymath.geometry.graphics2D;
+package nano.topred.nanoplots.mymath.geometry.geometry2D;
 
-import nano.topred.nanoplots.mymath.geometry.graphics3D.Point3D;
-import nano.topred.nanoplots.Position;
+import nano.topred.nanoplots.mymath.geometry.geometry3D.Point3D;
+import nano.topred.nanoplots.mymath.Position;
 
 import java.util.ArrayList;
 import java.util.UUID;
 
-import static nano.topred.nanoplots.mymath.geometry.graphics2D.Point2D.determinant;
+import static nano.topred.nanoplots.mymath.geometry.geometry2D.Point2D.determinant;
 
 public class Segment2D {
     private Point2D p1;
@@ -23,11 +23,7 @@ public class Segment2D {
         this.slope = calcSlope();
         this.yIntercept = calcYIntercept();
         this.length = calcLenght();
-        if (length<100)
-            this.points = bresenham(this);
-        else
-            this.points = null;
-
+        this.points = toPoint2D();
     }
 
     public double calcLenght()
@@ -51,90 +47,6 @@ public class Segment2D {
         return Y - this.slope*X;
     }
 
-    /*
-    public static int orientation(Point2D p, Point2D q, Point2D r) {
-        double val = (q.getY() - p.getY()) * (r.getX() - q.getX())
-                - (q.getX() - p.getX()) * (r.getY() - q.getY());
-
-        if (val == 0.0)
-            return 0;
-        return (val > 0) ? 1 : 2;
-    }
-
-    private static boolean onSegment(Point2D p, Point2D q, Point2D r)
-    {
-        if (q.getX() <= Math.max(p.getX(), r.getX()) && q.getX() >= Math.min(p.getX(), r.getX()) &&
-                q.getY() <= Math.max(p.getY(), r.getY()) && q.getY() >= Math.min(p.getY(), r.getY()))
-            return true;
-
-        return false;
-    }
-
-    public static boolean intersect(Segment2D s1, Segment2D s2) {
-        Point2D p1 = s1.getP1();
-        Point2D p2 = s1.getP2();
-        Point2D q1 = s2.getP1();
-        Point2D q2 = s2.getP2();
-        int o1 = orientation(p1, q1, p2);
-        int o2 = orientation(p1, q1, q2);
-        int o3 = orientation(p2, q2, p1);
-        int o4 = orientation(p2, q2, q1);
-
-        if (o1 != o2 && o3 != o4)
-            return true;
-
-        // Special Cases
-        // p1, q1 and p2 are colinear and p2 lies on segment p1q1
-        if (o1 == 0 && onSegment(p1, p2, q1)) return true;
-
-        // p1, q1 and q2 are colinear and q2 lies on segment p1q1
-        if (o2 == 0 && onSegment(p1, q2, q1)) return true;
-
-        // p2, q2 and p1 are colinear and p1 lies on segment p2q2
-        if (o3 == 0 && onSegment(p2, p1, q2)) return true;
-
-        // p2, q2 and q1 are colinear and q1 lies on segment p2q2
-        if (o4 == 0 && onSegment(p2, q1, q2)) return true;
-
-        return false; // Doesn't fall in any of the above cases
-
-    }
-    */
-
-
-
-
-
-
-    /*
-    public static int orientation(Point2D p, Point2D q, Point2D r) {
-        double val = (q.getY() - p.getY()) * (r.getX() - q.getX())
-                - (q.getX() - p.getX()) * (r.getY() - q.getY());
-
-        if (val == 0.0)
-            return 0; // colinear
-        return (val > 0) ? 1 : 2; // clock or counterclock wise
-    }
-
-    public static boolean intersect(Segment2D s1, Segment2D s2) {
-        Point2D p1 = s1.getP1();
-        Point2D q1 = s2.getP1();
-        Point2D p2 = s1.getP2();
-        Point2D q2 = s2.getP2();
-
-
-
-        int o1 = orientation(p1, q1, p2);
-        int o2 = orientation(p1, q1, q2);
-        int o3 = orientation(p2, q2, p1);
-        int o4 = orientation(p2, q2, q1);
-
-        if (o1 != o2 && o3 != o4)
-            return true;
-
-        return false;
-    }
-    */
 
 
     public static boolean doBoundingBoxesIntersect(Segment2D a, Segment2D b) {
@@ -190,21 +102,22 @@ public class Segment2D {
         return "p1:"+this.p1.toString()+"  p2:"+this.p2.toString();
     }
 
+    public ArrayList<Point2D> toPoint2D()
+    {
+        ArrayList<Point2D> points = new ArrayList<>();
+        if (this.length>100000)
+        {
+            System.out.println("Segment to big to calculate");
+            return points;
+        }
+        points = this.bresenham(this);
+        return points;
+    }
+
     public ArrayList<Position> toPositions(double y, UUID worldID)
     {
 
         ArrayList<Position> positions = new ArrayList<>();
-        if (this.length>100000)
-        {
-            System.out.println("Segment to big to draw");
-            return positions;
-        }
-        if(this.points==null)
-        {
-            this.points = this.bresenham(this);
-        }
-
-
         for (Point2D p2D: this.points)
             positions.add(new Position(new Point3D(p2D.getX(), y, p2D.getY()),worldID));
         return positions;

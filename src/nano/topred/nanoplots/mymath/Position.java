@@ -1,6 +1,6 @@
-package nano.topred.nanoplots;
+package nano.topred.nanoplots.mymath;
 
-import nano.topred.nanoplots.mymath.geometry.graphics3D.Point3D;
+import nano.topred.nanoplots.mymath.geometry.geometry3D.Point3D;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;

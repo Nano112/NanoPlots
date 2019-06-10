@@ -1,7 +1,7 @@
 package nano.topred.nanoplots.commands;
 
 import nano.topred.nanoplots.Main;
-import nano.topred.nanoplots.PlotPlayer;
+import nano.topred.nanoplots.plots.PlotPlayer;
 import nano.topred.nanoplots.plots.Plot;
 import nano.topred.nanoplots.plots.Plots;
 import nano.topred.nanoplots.PlotsData;
@@ -23,24 +23,36 @@ public class PlotHome implements CommandExecutor
         }
         Player player = (Player) sender;
         PlotPlayer plotPlayer = PlotsData.getPlotPlayer(player);
-        if (!Main.isNumeric(args[0]))
+        ArrayList<Long> plotPlayerPlots = plotPlayer.getPlotIDs();
+        Plot plot;
+        if (plotPlayerPlots.size()==0)
         {
-            sender.sendMessage("You must use a number");
+            sender.sendMessage("You don't have any plots");
+            return false;
+        }
+        if(args.length==0)
+        {
+             plot = Plots.getPlotFromID(plotPlayerPlots.get(0));
+        }
+        else
+        {
+            if (!Main.isNumeric(args[0]))
+            {
+                sender.sendMessage("You must use a number");
+                return false;
+            }
+            int plotNumber = Integer.parseInt(args[0]);
+            plot = Plots.getPlotFromID(plotPlayerPlots.get(plotNumber));
+        }
+
+        if (plot == null)
+        {
+            sender.sendMessage("Plot doesn't exist");
             return false;
         }
 
-        int plotNumber = Integer.parseInt(args[0]);
-        ArrayList<Integer> plotPlayerPlots = plotPlayer.getPlotIDs();
-
-        if (plotPlayerPlots.size() <= plotNumber)
-        {
-            sender.sendMessage("Plot doesn't exist");
-            return true;
-        }
-
-        Plot plot = Plots.getPlotFromID(plotPlayerPlots.get(plotNumber));
         player.teleport(plot.getPosition().getLocation());
-        player.sendMessage("You have been teleported");
+        player.sendMessage("You have been teleported to plot n°"+plot.getId());
         return true;
     }
 }
