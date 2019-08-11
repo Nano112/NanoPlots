@@ -42,6 +42,10 @@ public class PlotHome implements CommandExecutor
                 return false;
             }
             int plotNumber = Integer.parseInt(args[0]);
+            if (! (plotNumber < plotPlayerPlots.size())|| plotNumber<0) {
+                sender.sendMessage("This plot does not exist");
+                return false;
+            }
             plot = Plots.getPlotFromID(plotPlayerPlots.get(plotNumber));
         }
 
