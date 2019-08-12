@@ -2,6 +2,7 @@ package nano.topred.nanoplots.plots;
 import nano.topred.nanoplots.mymath.geometry.geometry2D.Point2D;
 import nano.topred.nanoplots.mymath.geometry.geometry2D.Polygon2D;
 import nano.topred.nanoplots.mymath.Position;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -150,6 +151,7 @@ public class PlotGeometry
 
     public ArrayList<Point2D> getSurface()
     {
+        Bukkit.broadcastMessage("Getting Surface");
         return this.surface;
     }
 

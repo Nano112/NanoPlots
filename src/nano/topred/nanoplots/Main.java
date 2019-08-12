@@ -37,8 +37,10 @@ public class Main extends JavaPlugin
         System.out.println("-------------------------------------");
     }
 
+
     public void registerCommands()
     {
+
         this.getCommand("test").setExecutor(new TestCommand());
         this.getCommand("plotClaim").setExecutor(new PlotClaim());
         this.getCommand("plotClaimCustom").setExecutor(new PlotClaimCustom());

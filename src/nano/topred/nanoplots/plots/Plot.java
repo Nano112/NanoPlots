@@ -5,10 +5,10 @@ import nano.topred.nanoplots.PlotsData;
 import nano.topred.nanoplots.logging.PlotModificationLog;
 import nano.topred.nanoplots.mymath.Position;
 import nano.topred.nanoplots.mymath.geometry.geometry2D.Point2D;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -41,7 +41,8 @@ public class Plot
         this.position = this.plotGeometry.getMeanPosition();
         this.log = new PlotModificationLog(plotPlayer);
         plotPlayer.getPlotIDs().add(id);
-        showPlot();
+        Bukkit.broadcastMessage("Plot created");
+        showPlot(p);
 
 
     }
@@ -58,14 +59,17 @@ public class Plot
         sender.sendMessage("Players: " + this.plotMembers.getPlayersAsString());
     }
 
-    public void showPlot()
+    public void showPlot(Player player)
     {
+        Bukkit.broadcastMessage("Showing plot");
         ArrayList<Point2D> points = this.plotGeometry.getSurface();
         World w = this.position.getWorld();
+        Bukkit.broadcastMessage(String.valueOf(points.size()));
         Position pos;
         for(Point2D p: points)
         {
-            pos = Point2D.toPosition(p,this.plotGeometry.getYMean()/*w.getHighestBlockYAt((int)Math.floor(p.getX()),(int)Math.floor(p.getY()))*/,w.getUID());
+
+            pos = Point2D.toPosition(p,player.getLocation().getBlockY(),w.getUID());
             pos.getLocation().getBlock().setBlockData(Material.ORANGE_WOOL.createBlockData());
         }
     }

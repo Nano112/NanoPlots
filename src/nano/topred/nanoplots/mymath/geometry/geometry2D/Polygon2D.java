@@ -1,6 +1,7 @@
 package nano.topred.nanoplots.mymath.geometry.geometry2D;
 
 import nano.topred.nanoplots.mymath.Position;
+import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -151,7 +152,7 @@ public class Polygon2D {
             positions = new ArrayList<>();
         return positions;
     }
-
+//probable bug
     public ArrayList<Point2D> getSurfacePoints()
     {
         final double step = 0.5;
@@ -169,6 +170,8 @@ public class Polygon2D {
                 }
             }
         }
+        Bukkit.broadcastMessage("Surface Points");
+        Bukkit.broadcastMessage(positions.toString());
         return positions;
     }
 
